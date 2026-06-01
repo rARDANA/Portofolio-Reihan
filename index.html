@@ -215,6 +215,138 @@
             box-shadow: inset 0 0 10px rgba(56, 189, 248, 0.2);
         }
 
+        /* --- STYLE FOTO PROFIL --- */
+        .profile-wrapper {
+            margin-bottom: 25px;
+        }
+        
+        .profile-pic {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+            transition: transform 0.3s ease, border-color 0.3s;
+        }
+        
+        .profile-pic:hover {
+            transform: scale(1.05);
+            border-color: var(--secondary);
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+        }
+
+        /* --- UNIK INTERAKTIF: GOOGLE DINO SCROLL TRACKER --- */
+        .dino-track {
+            position: fixed;
+            bottom: 85px;
+            left: 5%;
+            width: 90%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.05);
+            z-index: 9997;
+            border-radius: 2px;
+        }
+
+        .dino-progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            box-shadow: 0 0 8px var(--primary);
+            border-radius: 2px;
+        }
+
+        .dino-container {
+            position: fixed;
+            bottom: 87px;
+            left: 5%;
+            transform: translateX(0);
+            z-index: 9998;
+            pointer-events: none;
+        }
+
+        .dino-svg {
+            color: var(--primary);
+            filter: drop-shadow(0 0 5px var(--primary));
+            transition: color 0.3s;
+        }
+
+        .dino-container.is-scrolling .dino-svg {
+            animation: dino-run-anim 0.25s infinite alternate steps(2);
+            color: var(--secondary);
+            filter: drop-shadow(0 0 5px var(--secondary));
+        }
+
+        @keyframes dino-run-anim {
+            0% { transform: translateY(-3px) rotate(-4deg); }
+            100% { transform: translateY(0) rotate(4deg); }
+        }
+
+        /* --- UNIK SISI KANAN: ROKET FLYING / FALLING TRACKER --- */
+        .side-character-wrapper {
+            position: fixed;
+            right: 4%;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 9996;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .rocket-svg {
+            width: 36px;
+            height: 36px;
+            color: var(--secondary);
+            filter: drop-shadow(0 0 6px var(--secondary));
+            transform: rotate(45deg); /* Sudut awal melayang santai */
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s, filter 0.3s;
+            animation: rocket-idle 2.5s ease-in-out infinite;
+        }
+
+        .jet-flame {
+            width: 14px;
+            height: 14px;
+            color: #ff5500;
+            filter: drop-shadow(0 0 6px #ff3300);
+            opacity: 0;
+            transform: translateY(-5px) scaleY(0);
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        /* KONDISI 1: Pas Scroll ke Bawah (Karakter Jatuh Menukik) */
+        .side-character-wrapper.is-falling .rocket-svg {
+            transform: rotate(180deg) translateY(-10px); /* Menghadap bawah */
+            color: #ef4444; /* Berubah jadi merah tanda jatuh */
+            filter: drop-shadow(0 0 8px #ef4444);
+            animation: none;
+        }
+
+        /* KONDISI 2: Pas Scroll ke Atas (Karakter Terbang Melesat + Keluar Api) */
+        .side-character-wrapper.is-flying .rocket-svg {
+            transform: rotate(0deg) translateY(-15px); /* Menghadap atas lurus */
+            color: var(--primary); /* Berubah biru pendorong turbo */
+            filter: drop-shadow(0 0 8px var(--primary));
+            animation: none;
+        }
+
+        .side-character-wrapper.is-flying .jet-flame {
+            opacity: 1;
+            transform: translateY(2px) scaleY(1);
+            animation: flame-flicker 0.1s infinite alternate;
+        }
+
+        @keyframes rocket-idle {
+            0%, 100% { transform: rotate(45deg) translateY(0); }
+            50% { transform: rotate(45deg) translateY(-12px); }
+        }
+
+        @keyframes flame-flicker {
+            0% { transform: translateY(2px) scale(0.85); }
+            100% { transform: translateY(2px) scale(1.15); }
+        }
+
         /* --- LAYOUT GENERIK & ANIMASI SCROLL --- */
         section {
             padding: 120px 10% 80px 10%;
@@ -490,7 +622,7 @@
             border-top: 1px solid var(--border);
             color: var(--text-muted);
             font-size: 0.85rem;
-            margin-bottom: 60px;
+            margin-bottom: 120px;
         }
 
         /* --- RESPONSIVE BREAKPOINTS --- */
@@ -498,6 +630,7 @@
             #hero h1 { font-size: 3.2rem; }
             .about-grid { grid-template-columns: 1fr; }
             section { padding: 100px 6% 60px 6%; }
+            .side-character-wrapper { right: 2%; scale: 0.85; } /* Diperkecil dikit di tablet/HP */
         }
 
         @media (max-width: 576px) {
@@ -507,28 +640,42 @@
             .typing-container { font-size: 1.3rem; }
             .btn { width: 100%; justify-content: center; }
             .status-grid { grid-template-columns: 1fr; }
-            footer { margin-bottom: 70px; }
+            footer { margin-bottom: 140px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Lingkaran Cahaya Dekoratif Latar Belakang -->
     <div class="ambient-glow glow-1"></div>
     <div class="ambient-glow glow-2"></div>
     <div class="ambient-glow glow-3"></div>
 
-    <!-- Preloader Screen -->
     <div id="preloader">
         <div class="loader-circle"></div>
         <div class="loader-text">LOADING PORTFOLIO...</div>
     </div>
 
-    <!-- Custom Cursor Nodes (Desktop) -->
     <div class="custom-cursor"></div>
     <div class="custom-cursor-dot"></div>
 
-    <!-- Navigation Bar Desktop -->
+    <div class="dino-track">
+        <div class="dino-progress"></div>
+    </div>
+    <div class="dino-container">
+        <svg class="dino-svg" viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+            <path d="M14 2h8v2h2v5h-2v1h-6v1h7v2h1v3h-2v1h-3v1h4v1h1v2h-2v1h-3v1h-1v2h-2v-2h-1v-2h-1v-2h-1v-1h-2v-1h-1v-1h-1v-3h1v-1h1v-1h1v-1h1v-1h1v-2h1V4h1V3h1V2zm2 3h2v2h-2V5z"/>
+        </svg>
+    </div>
+
+    <div class="side-character-wrapper">
+        <svg class="rocket-svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2s4 4 4 9v5l-4 3-4-3v-5c0-5 4-9 4-9zm0 5c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-5 9l-2 3v1h4v-1l-2-3zm10 0l2 3v1h-4v-1l2-3z"/>
+        </svg>
+        <svg class="jet-flame" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 24c4.4 0 8-3.6 8-8 0-5.5-8-14-8-14s-8 8.5-8 14c0 4.4 3.6 8 8 8zm0-18c1.7 2.4 4 6 4 9.5 0 2.5-1.5 4.5-4 4.5s-4-2-4-4.5c0-3.5 2.3-7.1 4-9.5z"/>
+        </svg>
+    </div>
+
     <nav>
         <div class="logo">rARDANA</div>
         <ul class="nav-links">
@@ -539,7 +686,6 @@
         </ul>
     </nav>
 
-    <!-- UNIK MOBILE: Glassmorphic Dock Menu -->
     <div class="mobile-dock">
         <a href="#hero" class="mobile-dock-item active-dock">Home</a>
         <a href="#about" class="mobile-dock-item">About</a>
@@ -547,9 +693,12 @@
         <a href="#contact" class="mobile-dock-item">Contact</a>
     </div>
     
-    <!-- 1. HERO SECTION -->
     <section id="hero">
         <div class="reveal active">
+            <div class="profile-wrapper">
+                <img src="foto.jpg" alt="M. Reihan Ardana" class="profile-pic">
+            </div>
+
             <h2>Halo, salam kenal!</h2>
             <h1>M. Reihan Ardana</h1>
             <div class="typing-container">
@@ -576,7 +725,6 @@
         </div>
     </section>
 
-    <!-- 2. ABOUT SECTION -->
     <section id="about">
         <div class="reveal">
             <h2 class="section-title">Cerita Singkat</h2>
@@ -600,7 +748,6 @@
             </div>
         </div>
 
-        <!-- TIMELINE AKADEMIK & PERJALANAN -->
         <div class="reveal" style="margin-top: 50px;">
             <h2 class="section-title">Akademik & Perjalanan</h2>
             <div class="timeline">
@@ -639,7 +786,6 @@
         </div>
     </section>
 
-    <!-- 3. SKILLS SECTION -->
     <section id="skills">
         <div class="reveal">
             <h2 class="section-title">Keahlian & Minat</h2>
@@ -682,7 +828,6 @@
         </div>
     </section>
 
-    <!-- 4. CONTACT SECTION -->
     <section id="contact">
         <div class="reveal contact-wrapper">
             <h2 class="section-title">Ngobrol Yuk!</h2>
@@ -696,12 +841,10 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <p>&copy; 2026 M. Reihan Ardana. Crafted with pure Code & Interactive Logic.</p>
     </footer>
 
-    <!-- INTERACTIVE JAVASCRIPT LOGIC -->
     <script>
         // 1. Logic Preloader Fade Out
         window.addEventListener('load', () => {
@@ -723,7 +866,7 @@
             cursorDot.style.top = e.clientY + 'px';
         });
 
-        const hoverables = document.querySelectorAll('a, .card, .skill-badge, .logo, .status-item, .mobile-dock-item');
+        const hoverables = document.querySelectorAll('a, .card, .skill-badge, .logo, .status-item, .mobile-dock-item, .profile-pic');
         hoverables.forEach(item => {
             item.addEventListener('mouseenter', () => {
                 cursor.classList.add('hovered');
@@ -802,7 +945,15 @@
             if (textArray.length) setTimeout(type, newTextDelay + 250);
         });
 
-        // 4. Scroll Reveal Animation & Active Dock Navigation Highlighter
+        // 4. Scroll Logic (Reveal, Dock Active, Dino Tracker, & Sisi Kanan Flying/Falling)
+        const dinoContainer = document.querySelector('.dino-container');
+        const dinoProgress = document.querySelector('.dino-progress');
+        const sideCharacter = document.querySelector('.side-character-wrapper');
+        
+        let dinoTimeout;
+        let sideCharTimeout;
+        let lastScrollTop = 0; // Untuk deteksi arah scroll atas/bawah
+
         window.addEventListener('scroll', handleScrollLogic);
 
         function handleScrollLogic() {
@@ -811,6 +962,7 @@
             const dockItems = document.querySelectorAll('.mobile-dock-item');
             const windowHeight = window.innerHeight;
             
+            // A. Trigger scroll reveal
             reveals.forEach(reveal => {
                 const elementTop = reveal.getBoundingClientRect().top;
                 if (elementTop < windowHeight - 100) {
@@ -818,6 +970,7 @@
                 }
             });
 
+            // B. Highlight dock items
             let currentSectionId = "hero";
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
@@ -832,6 +985,44 @@
                     item.classList.add('active-dock');
                 }
             });
+
+            // JAVASCRIPT UTAMA DETEKSI SCROLL
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) : 0;
+            
+            // C. LOGIC DINO PROGRESS TRACKER
+            dinoProgress.style.width = (scrollPercent * 100) + '%';
+            const minLeft = 5;
+            const maxLeft = 86;
+            const currentLeft = minLeft + (scrollPercent * (maxLeft - minLeft));
+            dinoContainer.style.left = currentLeft + '%';
+            dinoContainer.classList.add('is-scrolling');
+            
+            clearTimeout(dinoTimeout);
+            dinoTimeout = setTimeout(() => {
+                dinoContainer.classList.remove('is-scrolling');
+            }, 150);
+
+
+            // D. LOGIC ROKET SISI KANAN (FLYING vs FALLING)
+            if (scrollTop > lastScrollTop) {
+                // User scroll ke BAWAH -> Set roket kondisi jatuh menukik
+                sideCharacter.classList.add('is-falling');
+                sideCharacter.classList.remove('is-flying');
+            } else if (scrollTop < lastScrollTop) {
+                // User scroll ke ATAS -> Set roket kondisi terbang melesat + api keluar
+                sideCharacter.classList.add('is-flying');
+                sideCharacter.classList.remove('is-falling');
+            }
+            // Update posisi scroll terakhir (pastikan tidak minus di browser mobile)
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+
+            // Jika user berhenti scroll selama 150ms, kembalikan roket ke kondisi melayang santai (idle)
+            clearTimeout(sideCharTimeout);
+            sideCharTimeout = setTimeout(() => {
+                sideCharacter.classList.remove('is-falling', 'is-flying');
+            }, 150);
         }
         
         setTimeout(handleScrollLogic, 1500);
