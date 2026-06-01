@@ -48,23 +48,28 @@
         .glow-2 { top: 40%; left: -10%; background: var(--secondary); }
         .glow-3 { bottom: 10%; right: 20%; background: var(--primary); }
 
-        /* --- STRUKTUR BARU: BENTUK MELAYANG INTERAKTIF (SUBTLE) --- */
+        /* --- BENTUK MELAYANG INTERAKTIF (UPDATED VISIBILITY & GLOW) --- */
         .floating-shape-wrapper {
             position: fixed;
             pointer-events: none;
             z-index: -1;
-            opacity: 0.12; /* Dibuat samar agar tidak merusak fokus/terlalu rame */
+            opacity: 0.25; /* Di-boost biar lebih kelihatan di semua perangkat */
             transition: transform 0.2s cubic-bezier(0.1, 0.8, 0.3, 1);
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
+        /* Menambahkan efek neon halus pada bentuk geometri */
+        .floating-shape-wrapper svg {
+            filter: drop-shadow(0 0 4px currentColor);
+        }
+
         /* Variasi Posisi Bentuk */
-        .shape-1 { top: 20%; left: 8%; color: var(--primary); }
-        .shape-2 { top: 35%; right: 15%; color: var(--secondary); }
-        .shape-3 { top: 65%; left: 12%; color: var(--secondary); }
-        .shape-4 { top: 80%; right: 18%; color: var(--primary); }
+        .shape-1 { top: 18%; left: 8%; color: var(--primary); }
+        .shape-2 { top: 32%; right: 12%; color: var(--secondary); }
+        .shape-3 { top: 62%; left: 10%; color: var(--secondary); }
+        .shape-4 { top: 78%; right: 14%; color: var(--primary); }
 
         /* Animasi Idle Shake/Melayang Berbeda tiap Objek */
         .shape-1 .shape-inner { animation: idle-shake-a 7s ease-in-out infinite alternate; }
@@ -675,55 +680,54 @@
             .btn { width: 100%; justify-content: center; }
             .status-grid { grid-template-columns: 1fr; }
             footer { margin-bottom: 140px; }
-            .floating-shape-wrapper { opacity: 0.06; } /* Kurangi opacity di HP biar ga sesak */
+            
+            /* SENSOR FIX MOBILE SHAPES VISIBILITY */
+            .floating-shape-wrapper { 
+                opacity: 0.32; /* Ditambah kontrasnya di mobile agar mantap kelihatan */
+                scale: 0.85;    /* Diperkecil halus agar serasi dengan layar kecil */
+            } 
+            .shape-1 { left: 4%; top: 15%; }
+            .shape-2 { right: 4%; top: 35%; }
+            .shape-3 { left: 3%; top: 60%; }
+            .shape-4 { right: 5%; top: 82%; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Lingkaran Cahaya Dekoratif Latar Belakang -->
     <div class="ambient-glow glow-1"></div>
     <div class="ambient-glow glow-2"></div>
     <div class="ambient-glow glow-3"></div>
 
-    <!-- ELEMEN BARU: Bentuk Bentuk Melayang (Subtle Geometric Shapes) -->
-    <!-- data-speed menentukan sensitivitas respon gerak saat discroll -->
     <div class="floating-shape-wrapper shape-1" data-speed="0.08">
         <div class="shape-inner">
-            <!-- Tanda Plus Neon -->
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
         </div>
     </div>
     <div class="floating-shape-wrapper shape-2" data-speed="-0.05">
         <div class="shape-inner">
-            <!-- Segitiga Neon -->
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><polygon points="12 2 22 22 2 22"></polygon></svg>
         </div>
     </div>
     <div class="floating-shape-wrapper shape-3" data-speed="0.06">
         <div class="shape-inner">
-            <!-- Kotak Neon Diamond -->
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect></svg>
         </div>
     </div>
     <div class="floating-shape-wrapper shape-4" data-speed="-0.09">
         <div class="shape-inner">
-            <!-- Lingkaran Neon -->
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle></svg>
         </div>
     </div>
 
-    <!-- Preloader Screen -->
     <div id="preloader">
         <div class="loader-circle"></div>
         <div class="loader-text">LOADING PORTFOLIO...</div>
     </div>
 
-    <!-- Custom Cursor Nodes (Desktop) -->
     <div class="custom-cursor"></div>
     <div class="custom-cursor-dot"></div>
 
-    <!-- Google Dino Lintasan & Karakter (Sisi Bawah) -->
     <div class="dino-track">
         <div class="dino-progress"></div>
     </div>
@@ -733,7 +737,6 @@
         </svg>
     </div>
 
-    <!-- Karakter Roket Interaktif (Sisi Kanan) -->
     <div class="side-character-wrapper">
         <svg class="rocket-svg" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2s4 4 4 9v5l-4 3-4-3v-5c0-5 4-9 4-9zm0 5c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-5 9l-2 3v1h4v-1l-2-3zm10 0l2 3v1h-4v-1l2-3z"/>
@@ -743,7 +746,6 @@
         </svg>
     </div>
 
-    <!-- Navigation Bar Desktop -->
     <nav>
         <div class="logo">rARDANA</div>
         <ul class="nav-links">
@@ -754,7 +756,6 @@
         </ul>
     </nav>
 
-    <!-- UNIK MOBILE: Glassmorphic Dock Menu -->
     <div class="mobile-dock">
         <a href="#hero" class="mobile-dock-item active-dock">Home</a>
         <a href="#about" class="mobile-dock-item">About</a>
@@ -762,7 +763,6 @@
         <a href="#contact" class="mobile-dock-item">Contact</a>
     </div>
     
-    <!-- 1. HERO SECTION -->
     <section id="hero">
         <div class="reveal active">
             <div class="profile-wrapper">
@@ -795,7 +795,6 @@
         </div>
     </section>
 
-    <!-- 2. ABOUT SECTION -->
     <section id="about">
         <div class="reveal">
             <h2 class="section-title">Cerita Singkat</h2>
@@ -851,7 +850,6 @@
         </div>
     </section>
 
-    <!-- 3. SKILLS SECTION -->
     <section id="skills">
         <div class="reveal">
             <h2 class="section-title">Keahlian & Minat</h2>
@@ -890,7 +888,6 @@
         </div>
     </section>
 
-    <!-- 4. CONTACT SECTION -->
     <section id="contact">
         <div class="reveal contact-wrapper">
             <h2 class="section-title">Ngobrol Yuk!</h2>
@@ -904,12 +901,10 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <p>&copy; 2026 M. Reihan Ardana. Crafted with pure Code & Interactive Logic.</p>
     </footer>
 
-    <!-- INTERACTIVE JAVASCRIPT LOGIC -->
     <script>
         // 1. Logic Preloader Fade Out
         window.addEventListener('load', () => {
@@ -1000,7 +995,7 @@
         const dinoContainer = document.querySelector('.dino-container');
         const dinoProgress = document.querySelector('.dino-progress');
         const sideCharacter = document.querySelector('.side-character-wrapper');
-        const floatingShapes = document.querySelectorAll('.floating-shape-wrapper'); // Target bentuk baru
+        const floatingShapes = document.querySelectorAll('.floating-shape-wrapper');
         
         let dinoTimeout; let sideCharTimeout; let lastScrollTop = 0;
 
@@ -1012,13 +1007,11 @@
             const dockItems = document.querySelectorAll('.mobile-dock-item');
             const windowHeight = window.innerHeight;
             
-            // A. Trigger scroll reveal
             reveals.forEach(reveal => {
                 const elementTop = reveal.getBoundingClientRect().top;
                 if (elementTop < windowHeight - 100) reveal.classList.add('active');
             });
 
-            // B. Highlight dock items
             let currentSectionId = "hero";
             sections.forEach(section => {
                 if (pageYOffset >= section.offsetTop - 200) currentSectionId = section.getAttribute('id');
@@ -1033,7 +1026,7 @@
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
             const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) : 0;
             
-            // C. LOGIC DINO PROGRESS TRACKER
+            // LOGIC DINO PROGRESS TRACKER
             dinoProgress.style.width = (scrollPercent * 100) + '%';
             const minLeft = 5; const maxLeft = 86;
             const currentLeft = minLeft + (scrollPercent * (maxLeft - minLeft));
@@ -1043,7 +1036,7 @@
             clearTimeout(dinoTimeout);
             dinoTimeout = setTimeout(() => dinoContainer.classList.remove('is-scrolling'), 150);
 
-            // D. LOGIC ROKET SISI KANAN (FLYING vs FALLING)
+            // LOGIC ROKET SISI KANAN (FLYING vs FALLING)
             if (scrollTop > lastScrollTop) {
                 sideCharacter.classList.add('is-falling');
                 sideCharacter.classList.remove('is-flying');
@@ -1056,8 +1049,7 @@
             clearTimeout(sideCharTimeout);
             sideCharTimeout = setTimeout(() => sideCharacter.classList.remove('is-falling', 'is-flying'), 150);
 
-            // E. LOGIC BARU: PARALLAX SHAPES RESPONSIVE SCROLL
-            // Bentuk tetap diam di posisinya (fixed) tapi bergeser pelan mengikuti arah scroll
+            // LOGIC PARALLAX SHAPES RESPONSIVE SCROLL
             floatingShapes.forEach(shape => {
                 const speed = parseFloat(shape.getAttribute('data-speed'));
                 const yTranslation = scrollTop * speed;
